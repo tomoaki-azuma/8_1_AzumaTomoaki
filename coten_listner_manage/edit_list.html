@@ -1,0 +1,70 @@
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COTEN LISTENER</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169185052-1"></script>
+
+</head>
+<body>
+
+    <div class="container-xs pt-3 mx-5">
+        <div id="app">
+
+        <div class="sticky-top ">
+            <div class="row d-flex justify-content-center bg-warning text-white p-2">
+                <div><h3 class="m-0 mx-2"><a href="index.html">COTEN LISTENER KANRI</a></h3></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="d-flex mx-0 mt-3">
+                <div class="mr-4"><i class="fas fa-sort fa-2x" @click="sort_change()"></i></div>
+                <a v-bind:href="'./create_program.php'">
+                    <button type="button" class="btn btn-primary btn-sm">Add Program</button>
+                </a>
+            </div>
+            <div v-for="data in searched_program" class="border border-left-0 border-right-0 border-top-0 my-1 py-1 mx-1 px-0">
+                <div class="row">
+                    <div class="text-left px-0"><small v-cloak>{{ data['delivery_date'] }}</small></div>
+                </div>
+                <div class="row">
+                    <div class="text-left px-0" v-cloak>{{ episode_num(data['num']) }} {{ data['title'] }} </div>
+                </div>
+                <div class="row d-flex justify-content-end align-self-end">
+                     <div class="mx-2">
+                        <a v-bind:href="'./edit_detail.php?id=' + data['id']">
+                            <i class="fas fa-edit fa-x"></i>
+                        </a>
+                    </div>
+                    <div class="mx-2">
+                        <a>
+                            <i class="fas fa-trash-alt fa-x"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            
+        </div>
+
+        </div>
+    </div>
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
