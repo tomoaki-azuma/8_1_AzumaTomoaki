@@ -17,7 +17,8 @@ if ($type == 'new') {
     $pdo = db_conn();
 
     // 対象データ取得
-    $stmt = $pdo->prepare("SELECT * FROM tb_coten_theme");
+    $stmt = $pdo->prepare("SELECT * FROM tb_coten_theme where id = :id");
+    $stmt ->bindvalue(":id",$id,PDO::PARAM_INT);//PDO::PARAM_STR
     $status = $stmt->execute();
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);

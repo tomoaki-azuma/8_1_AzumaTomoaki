@@ -230,16 +230,20 @@
                     <div class="text-left px-0" v-cloak>{{ episode_num(data['num']) }} {{ data['title'] }} </div>
                 </div>
                 <div class="row d-flex justify-content-end align-self-end">
-                     <div class="mx-2">
+                    <template v-if="data['google_podcast_url'] != ''">
+                    <div class="mx-2">
                         <a target="_blank" v-bind:href="'https://podcasts.google.com'+ data['google_podcast_url']">
                             <i class="fas fa-podcast fa-2x"></i>
                         </a>
                     </div>
+                    </template>
+                    <template v-if="data['youtube_url'] != ''">
                     <div class="mx-2">
                         <p @click="playYT(data['youtube_url'])">
                             <i class="fab fa-youtube fa-2x"></i>
                         </p>
                     </div>
+                    </template>
                 </div>
             </div>
         </div>
