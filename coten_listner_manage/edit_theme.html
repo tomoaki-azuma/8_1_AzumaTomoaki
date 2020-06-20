@@ -34,12 +34,12 @@
                 </div>
                 <div class="row d-flex justify-content-end align-self-end">
                      <div class="mx-2">
-                        <a v-bind:href="'./edit_theme_detail.php?id=' + data['id']">
+                        <a v-bind:href="'./edit_theme_detail.php?id=' + data['id'] + '&type=update'">
                             <i class="fas fa-edit fa-x"></i>
                         </a>
                     </div>
                     <div class="mx-2">
-                        <a>
+                        <a v-bind:href="'./edit_theme_detail.php?id=' + data['id'] + '&type=delete'">
                             <i class="fas fa-trash-alt fa-x"></i>
                         </a>
                     </div>

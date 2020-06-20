@@ -3,6 +3,15 @@
 $id = $_GET["id"];
 $type = $_GET["type"];
 
+$title = '';
+if ($type == 'new') {
+    $title = 'CREATE THEME';
+} elseif ($type == 'update') {
+    $title = 'EDIT THEME';
+} else {
+    $title = 'DELETE THEME';
+}
+
 $form_str = "";
 
 if ($type == 'new') {
@@ -22,7 +31,11 @@ if ($type == 'new') {
     $status = $stmt->execute();
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $form_str = "<form method='POST' action='update_theme.php'>";
+    if ($type == 'create' || $type == 'update') {
+        $form_str = "<form enctype='multipart/form-data' method='POST' action='update_theme.php'>";
+    } elseif ($type == 'delete') {
+        $form_str = "<form method='POST' action='delete_theme.php'>";
+    }
 }
 
 
@@ -53,25 +66,45 @@ if ($type == 'new') {
 
         <div class="my-3">
             <div class="d-flex justify-content-center my-3">
-                <h3>Edit Theme</h3>
+                <h3><?= $title ?></h3>
             </div>
             <?= $form_str ?>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" value="<?=$row['title']?>">
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" name="country" class="form-control" value="<?=$row['country']?>">
-                </div>
-                <div class="form-group">
-                    <label for="img">img_url</label>
-                    <input type="text" name="img" class="form-control" value="<?=$row['img']?>">
-                </div>
-                <div class="row my-3 mx-2 d-flex justify-content-center">
-                    <input type="submit" class="btn btn-primary" value="Update">
-                    <div class="mx-3"><a href="./edit_theme.html" class="btn btn-secondary" role="button">Cancel</a></div>
-                </div>
+                <?php if ($type == 'delete'): ?>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" value="<?=$row['title']?>" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" name="country" class="form-control" value="<?=$row['country']?>" disabled="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="img">img_url</label>
+                        <input type="text" name="img" class="form-control" value="<?=$row['img']?>" disabled="true">
+                    </div>
+                    <div class="row my-3 mx-2 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-danger" value="DELETE?">
+                        <div class="mx-3"><a href="./edit_theme.html" class="btn btn-secondary" role="button">Cancel</a></div>
+                    </div>
+                <?php else: ?>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" value="<?=$row['title']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" name="country" class="form-control" value="<?=$row['country']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="img">current img_url</label>
+                        <input type="text" name="img" value="<?=$row['img']?>" disabled="true"/>
+                        <input name="userfile" type="file" value="<?= $row['img'] ?>"/>
+                    </div>
+                    <div class="row my-3 mx-2 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-primary" value="Update">
+                        <div class="mx-3"><a href="./edit_theme.html" class="btn btn-secondary" role="button">Cancel</a></div>
+                    </div>
+                <?php endif; ?>
                 <input type="hidden" name="id" value="<?= $id ?>">
             </form>
         </div>

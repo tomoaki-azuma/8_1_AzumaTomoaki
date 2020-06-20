@@ -1,7 +1,7 @@
 <?php
     ini_set( 'display_errors', 1 );
     require "funcs.php";
-
+    
     $pdo = db_conn();
 
     $sql = "";

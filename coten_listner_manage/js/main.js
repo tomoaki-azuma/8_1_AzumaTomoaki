@@ -7,7 +7,8 @@ let vm = new Vue({
         themes: [],
         searched_program: [],
         sort_flg: 'd',  // ascending or decending
-        book_json: []
+        book_json: [],
+        search_keyword: ""
     },
     methods: {
         playYT: function(video_id) {
@@ -40,6 +41,11 @@ let vm = new Vue({
             for (i=0; i<dx; i++) {
                 this.themes.push([])
             }
+        },
+        search_by_keyword: function() {
+            this.searched_program = this.program_data.filter( function( value, index, array ) {
+                 return value.title.indexOf(this.search_keyword) >= 0;       
+            }, this)
         },
         search_theme: function(theme_id) {
             

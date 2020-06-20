@@ -58,7 +58,7 @@ while($theme_row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         <div class="my-3">
             <div class="d-flex justify-content-center my-3">
-                <h3>Edit Program</h3>
+                <h3>CREATE PROGRAM</h3>
             </div>
             <form method="POST" action="update.php">
                 <div class="form-group">

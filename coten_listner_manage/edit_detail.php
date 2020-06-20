@@ -5,6 +5,16 @@ $id = $_GET["id"];
 // DBに接続
 require "funcs.php";
 $pdo = db_conn();
+$type = $_GET['type'];
+
+$title = '';
+if ($type == 'create') {
+    $title = 'CREATE PROGRAM';
+} elseif ($type == 'update') {
+    $title = 'EDIT PROGRM';
+} else {
+    $title = 'DELETE PROMGRAM';
+}
 
 // 対象データ取得
 $stmt = $pdo->prepare("SELECT * FROM tb_coten_radio WHERE id =:a1");
@@ -25,7 +35,11 @@ $status = $stmt->execute();
 
 $select_options = "";
 while($theme_row = $stmt->fetch(PDO::FETCH_ASSOC)){
-    $select_options .= "<option value='".$theme_row['id']."'>".$theme_row['title']."</option>";
+    if ($theme_row['id'] == $row['theme_id']) {
+        $select_options .= "<option selected value='".$theme_row['id']."'>".$theme_row['title']."</option>";
+    } elseif ($theme_row['id'] != "") {
+        $select_options .= "<option value='".$theme_row['id']."'>".$theme_row['title']."</option>";
+    }
 }
 
 ?>
@@ -54,49 +68,93 @@ while($theme_row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         <div class="my-3">
             <div class="d-flex justify-content-center my-3">
-                <h3>Edit Program</h3>
+                <h3><?= $title ?></h3>
             </div>
-            <form method="POST" action="update.php">
-                <div class="form-group">
-                    <label for="num" class="mr-3">No.</label>
-                    <input type="text" name="num" value="<?=$row['num']?>">
-                </div>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" value="<?=$row['title']?>">
-                </div>
-                <div class="form-group">
-                    <label for="point">Description</label>
-                    <textarea name="point" class="form-control"><?=$row['point']?></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="apple_podcast_url">apple_podcast_url</label>
-                    <input type="text" name="apple_podcast_url" class="form-control" value="<?=$row['apple_podcast_url']?>">
-                </div>
-                <div class="form-group">
-                    <label for="google_podcast_url">google_podcast_url</label>
-                    <input type="text" name="google_podcast_url" class="form-control" value="<?=$row['google_podcast_url']?>">
-                </div>
-                <div class="form-group">
-                    <label for="youtube_url">youtube_url</label>
-                    <input type="text" name="youtube_url" class="form-control" value="<?=$row['youtube_url']?>">
-                </div>
-                <div class="form-inline my-4">
-                    <label for="theme_id" class="mr-3">テーマ</label>
-                    <select name="theme_id">
-                        <?= $select_options ?>
-                    </select>
-                    <div class="mx-4"></div>
-                    <label for="delivery_date" class="mr-3">配信日</label>
-                    <input type="text" name="delivery_date" value="<?=$row['delivery_date']?>">
-                </div>
-                <div class="row my-3 mx-2 d-flex justify-content-center">
-                    <input type="submit" class="btn btn-primary" value="Update">
-                    <div class="mx-3"><a href="./edit_list.html" class="btn btn-secondary" role="button">Cancel</a></div>
-                </div>
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <input type="hidden" name="type" value="update">
-            </form>
+            <?php if ($type == 'delete'): ?>
+                <form method="POST" action="delete_program.php">
+                    <div class="form-group">
+                        <label for="num" class="mr-3">No.</label>
+                        <input type="text" name="num" value="<?=$row['num']?>" disabled='true'>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" value="<?=$row['title']?>" disabled='true'>
+                    </div>
+                    <div class="form-group">
+                        <label for="point">Description</label>
+                        <textarea name="point" class="form-control" disabled='true'><?=$row['point']?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="apple_podcast_url">apple_podcast_url</label>
+                        <input type="text" name="apple_podcast_url" class="form-control" value="<?=$row['apple_podcast_url']?>" disabled='true'>
+                    </div>
+                    <div class="form-group">
+                        <label for="google_podcast_url">google_podcast_url</label>
+                        <input type="text" name="google_podcast_url" class="form-control" value="<?=$row['google_podcast_url']?>" disabled='true'>
+                    </div>
+                    <div class="form-group">
+                        <label for="youtube_url">youtube_url</label>
+                        <input type="text" name="youtube_url" class="form-control" value="<?=$row['youtube_url']?>" disabled='true'>
+                    </div>
+                    <div class="form-inline my-4">
+                        <label for="theme_id" class="mr-3">テーマ</label>
+                        <select name="theme_id" disabled='true'>
+                            <?= $select_options ?>
+                        </select>
+                        <div class="mx-4"></div>
+                        <label for="delivery_date" class="mr-3">配信日</label>
+                        <input type="text" name="delivery_date" value="<?=$row['delivery_date']?>" disabled='true'>
+                    </div>
+                    <div class="row my-3 mx-2 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-danger" value="DELETE">
+                        <div class="mx-3"><a href="./edit_list.html" class="btn btn-secondary" role="button">Cancel</a></div>
+                    </div>
+                    <input type="hidden" name="id" value="<?= $id ?>">
+                    <input type="hidden" name="type" value="delete">
+                </form>
+            <?php else: ?>
+                <form method="POST" action="update.php">
+                    <div class="form-group">
+                        <label for="num" class="mr-3">No.</label>
+                        <input type="text" name="num" value="<?=$row['num']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" value="<?=$row['title']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="point">Description</label>
+                        <textarea name="point" class="form-control"><?=$row['point']?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="apple_podcast_url">apple_podcast_url</label>
+                        <input type="text" name="apple_podcast_url" class="form-control" value="<?=$row['apple_podcast_url']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="google_podcast_url">google_podcast_url</label>
+                        <input type="text" name="google_podcast_url" class="form-control" value="<?=$row['google_podcast_url']?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="youtube_url">youtube_url</label>
+                        <input type="text" name="youtube_url" class="form-control" value="<?=$row['youtube_url']?>">
+                    </div>
+                    <div class="form-inline my-4">
+                        <label for="theme_id" class="mr-3">テーマ</label>
+                        <select name="theme_id">
+                            <?= $select_options ?>
+                        </select>
+                        <div class="mx-4"></div>
+                        <label for="delivery_date" class="mr-3">配信日</label>
+                        <input type="text" name="delivery_date" value="<?=$row['delivery_date']?>">
+                    </div>
+                    <div class="row my-3 mx-2 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-primary" value="Update">
+                        <div class="mx-3"><a href="./edit_list.html" class="btn btn-secondary" role="button">Cancel</a></div>
+                    </div>
+                    <input type="hidden" name="id" value="<?= $id ?>">
+                    <input type="hidden" name="type" value="<?= $type ?>">
+                </form>
+            <?php endif; ?>
         </div>
 
     </div>
