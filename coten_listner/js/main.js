@@ -91,7 +91,7 @@ let vm = new Vue({
     },
     mounted: function() {
         axios
-            .get('http://127.0.0.1:8888/8_1_AzumaTomoaki/coten_listner_manage/program_select.php')
+            .get('../coten_listner_manage/program_select.php')
             .then( response => {
                 this.program_data = response.data;
                 this.searched_program = this.program_data
@@ -101,13 +101,13 @@ let vm = new Vue({
                 console.log(error);
             });
         axios
-            .get('http://127.0.0.1:8888/8_1_AzumaTomoaki/coten_listner_manage/theme_select.php')
+            .get('../coten_listner_manage/theme_select.php')
             .then( response=> ( this.themes = response.data ))
             .catch(function(error) {
                 console.log(error);
             });
         axios
-            .get('http://127.0.0.1:8888/8_1_AzumaTomoaki/coten_listner_manage/book_select.php')
+            .get('../coten_listner_manage/book_select.php')
             .then( response=> ( this.book_json = response.data ))
             .catch(function(error) {
                 console.log(error);
